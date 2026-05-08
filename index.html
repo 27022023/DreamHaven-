@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dream Haven</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --text-light: #f7f7ff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at top, #2b1b5a, #05010f);
+      color: var(--text-light);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    #home {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+    }
+    .stars {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.6) 0, transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.5) 0, transparent 40%),
+        radial-gradient(circle at 30% 80%, rgba(255,255,255,0.4) 0, transparent 40%);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .title-container {
+      position: relative;
+      z-index: 2;
+      padding: 1rem;
+    }
+    h1 {
+      font-size: 3rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.85;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(10, 5, 30, 0.8);
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-1px);
+    }
+    #menuOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 1, 20, 0.95);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      z-index: 10;
+      padding: 1.5rem;
+    }
+    #menuOverlay h2 {
+      margin-bottom: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+    .menu-item {
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      min-width: 240px;
+      text-align: center;
+      background: rgba(20, 10, 60, 0.9);
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .menu-item:hover {
+      background: rgba(255,255,255,0.08);
+    }
+    .menu-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      cursor: pointer;
+      opacity: 0.7;
+      font-size: 1.2rem;
+    }
+    @media (min-width: 768px) {
+      h1 { font-size: 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <section id="home">
+    <div class="stars"></div>
+    <div class="title-container">
+      <h1>Dream Haven</h1>
+      <p class="subtitle">A cozy universe for your sleep, dreams, routines, and stars ✨</p>
+      <button class="btn" id="openMenu">Menu</button>
+    </div>
+  </section>
+
+  <div id="menuOverlay">
+    <div class="menu-close" id="closeMenu">✕</div>
+    <h2>Dream Haven Menu</h2>
+    <a class="menu-item" href="tracker.html">Sleep Tracker 🌙</a>
+    <a class="menu-item" href="routine.html">Bedtime Routine Generator 🕒</a>
+    <a class="menu-item" href="music.html">Sleep Music 🎧</a>
+    <a class="menu-item" href="constellation.html">Constellation Sky ✨</a>
+    <a class="menu-item" href="info.html">Sleep Info 📘</a>
+  </div>
+
+  <script>
+    const openMenu = document.getElementById('openMenu');
+    const closeMenu = document.getElementById('closeMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    openMenu.addEventListener('click', () => {
+      menuOverlay.style.display = 'flex';
+    });
+    closeMenu.addEventListener('click', () => {
+      menuOverlay.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
