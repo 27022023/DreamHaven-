@@ -4,83 +4,126 @@
   <meta charset="UTF-8" />
   <title>Dream Haven – Sleep Info</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <style>
     :root {
-      --bg: #d9dde8;
-      --card-bg: #ffffff;
-      --text-dark: #111111;
+      --bg: #dcdcdc;          /* SILVER background */
+      --card-bg: #ffe0ef;     /* baby pink */
+      --text-dark: #2a2a2a;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
     body {
-      background: radial-gradient(circle at top, #f0f2ff, #c3c6d6);
+      background: var(--bg);
       color: var(--text-dark);
       min-height: 100vh;
     }
-    .section { padding: 1rem 1.25rem 1.5rem; }
+
+    .section {
+      padding: 1.5rem 1.5rem 2rem;
+    }
+
     .section-header {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
-    .back-link { text-decoration: none; color: var(--text-dark); font-size: 1.3rem; }
+
+    .back-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
     .section-title {
-      font-size: 1.2rem;
-      font-weight: 600;
+      font-size: 1.3rem;
+      font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
+
     .card {
-      background: rgba(255,255,255,0.95);
-      border-radius: 1rem;
-      border: 1px solid rgba(0,0,0,0.08);
-      padding: 0.75rem 0.9rem;
-      margin-bottom: 0.75rem;
+      background: var(--card-bg);
+      border-radius: 1.4rem;
+      border: 2px solid rgba(0,0,0,0.08);
+      padding: 1.4rem 1.5rem;
+      margin-bottom: 1.4rem;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
     }
-    .card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; }
-    ul { font-size: 0.9rem; line-height: 1.5; padding-left: 1rem; }
-    @media (min-width: 768px) {
-      .section { padding: 1.5rem 2.5rem 2rem; }
+
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+    }
+
+    ul {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      padding-left: 1rem;
     }
   </style>
 </head>
+
 <body>
   <section class="section">
+
     <div class="section-header">
       <a href="index.html" class="back-link">←</a>
       <span class="section-title">Sleep Info</span>
     </div>
 
+    <!-- CARD 1 -->
     <div class="card">
-      <h3>How to improve sleep quality</h3>
+      <h3>How to improve sleep quality 🌙</h3>
       <ul>
-        <li>Avoid using your phone or screens 30–60 minutes before bed.</li>
-        <li>Keep your bedroom cool, dark, and quiet.</li>
-        <li>Go to bed and wake up at the same time every day, even on weekends.</li>
-        <li>Use your bed only for sleep and relaxation, not for work or scrolling.</li>
-        <li>Limit caffeine in the afternoon and evening.</li>
+        <li>Avoid screens 30–60 minutes before bed to reduce blue‑light stimulation 📵</li>
+        <li>Keep your bedroom cool, dark, and quiet for optimal sleep conditions ❄️🌑</li>
+        <li>Stick to a consistent sleep schedule every day, even weekends ⏰</li>
+        <li>Use your bed only for sleep and relaxation — not work or scrolling 🛏️</li>
+        <li>Limit caffeine after 2 PM to avoid sleep disruption ☕🚫</li>
+        <li>Try calming activities like reading, stretching, or journaling before bed 📖✨</li>
+        <li>Keep your room tidy — clutter can increase stress and delay sleep 🧺</li>
       </ul>
     </div>
 
+    <!-- CARD 2 -->
     <div class="card">
-      <h3>Fall asleep faster</h3>
+      <h3>Fall asleep faster 😴</h3>
       <ul>
-        <li>Try 4‑7‑8 breathing: inhale 4 seconds, hold 7, exhale 8.</li>
-        <li>Do a quick body scan: relax each part of your body from toes to head.</li>
-        <li>Write down worries or to‑dos before bed so your mind can let go.</li>
-        <li>Keep lights dim in the hour before sleep.</li>
+        <li>Try 4‑7‑8 breathing: inhale 4s, hold 7s, exhale 8s 🌬️</li>
+        <li>Do a body scan: relax each part of your body from toes to head 🦶➡️🧠</li>
+        <li>Write down worries or to‑dos so your mind can let go 📝💭</li>
+        <li>Keep lights dim in the hour before sleep to signal melatonin release 💡⬇️</li>
+        <li>Use calming scents like lavender or chamomile 🌸</li>
+        <li>Try gentle white noise or soft rain sounds to relax your brain 🌧️</li>
+        <li>Avoid heavy meals 2–3 hours before bed 🍽️</li>
       </ul>
     </div>
 
+    <!-- CARD 3 -->
     <div class="card">
-      <h3>Fun sleep facts</h3>
+      <h3>Fun sleep facts ✨</h3>
       <ul>
-        <li>Most vivid dreams happen during REM sleep.</li>
-        <li>Some people dream in black and white.</li>
-        <li>Good sleep helps memory, mood, and creativity.</li>
-        <li>Humans spend about a third of their lives sleeping.</li>
+        <li>Most vivid dreams happen during REM sleep — your brain is super active 🌈</li>
+        <li>Some people dream in black and white, especially older generations 🖤🤍</li>
+        <li>Good sleep boosts memory, mood, creativity, and immune function 🧠💡</li>
+        <li>Humans spend about one‑third of their lives sleeping 😴</li>
+        <li>Dreams often mix memories, emotions, and imagination into surreal stories 🌌</li>
+        <li>Your brain cleans itself during deep sleep — literally washes toxins away 🧼🧠</li>
+        <li>Sleep deprivation can make you crave sugar and carbs 🍩</li>
       </ul>
     </div>
+
   </section>
 </body>
 </html>
+        
