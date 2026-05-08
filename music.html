@@ -1,151 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" href="icon_1772044007674.png?v=1" type="image/png">
 <meta charset="UTF-8">
-<title>Dream Haven – Sleep Music</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relax</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root {
-  --bg: #0a0f2d;
-  --card: #1a224d;
-  --accent: #c7a6ff;
-  --text: #f5eaff;
-}
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #0a0f2d; /* DARK BLUE */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+  }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", system-ui, sans-serif;
-}
+  .container {
+    width: 100%;
+    max-width: 480px;
+    padding: 30px 20px 40px;
+    box-sizing: border-box;
+    text-align: center;
+  }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  padding: 1.5rem;
-}
+  /* BACK BUTTON */
+  .back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 20px;
+    text-decoration: none;
+    color: #c7a6ff;
+    background: #11183a;
+    padding: 10px 18px;
+    border-radius: 12px;
+    border: 2px solid #c7a6ff;
+    box-shadow: 0 0 12px rgba(199,166,255,0.4);
+    transition: 0.2s;
+  }
 
-.header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
+  .back-btn:hover {
+    background: #c7a6ff;
+    color: #000;
+  }
 
-.back {
-  font-size: 2rem;
-  text-decoration: none;
-  color: var(--text);
-}
+  h1, h2 {
+    margin: 0 0 20px;
+    color: #c7a6ff; /* lavender */
+  }
 
-.title {
-  font-size: 1.8rem;
-  font-weight: 700;
-}
+  .section {
+    background: #1a224d; /* deep blue card */
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 20px rgba(199,166,255,0.3);
+    border: 2px solid #c7a6ff;
+  }
 
-.card {
-  background: var(--card);
-  padding: 1.5rem;
-  border-radius: 1.5rem;
-  border: 2px solid var(--accent);
-  box-shadow: 0 0 20px rgba(199,166,255,0.3);
-  margin-bottom: 1.5rem;
-}
+  .breath-box {
+    font-size: 40px;
+    padding: 30px;
+    border-radius: 20px;
+    background: #11183a;
+    width: 220px;
+    margin: 10px auto;
+    animation: fade 4s ease-in-out infinite;
+    color: #f5eaff;
+  }
 
-.sound-btn {
-  width: 100%;
-  padding: 1rem;
-  margin-bottom: 0.8rem;
-  font-size: 1.2rem;
-  border-radius: 1rem;
-  border: 2px solid var(--accent);
-  background: #11183a;
-  color: var(--text);
-  cursor: pointer;
-  transition: 0.2s;
-}
+  @keyframes fade {
+    0% { opacity: 0.4; transform: scale(0.96); }
+    50% { opacity: 1; transform: scale(1.04); }
+    100% { opacity: 0.4; transform: scale(0.96); }
+  }
 
-.sound-btn.active {
-  background: var(--accent);
-  color: #000;
-  font-weight: 700;
-}
+  .start-btn {
+    margin-top: 15px;
+    padding: 12px 26px;
+    border-radius: 999px;
+    border: none;
+    background: #c7a6ff;
+    color: #000;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-#timerDisplay {
-  font-size: 2.2rem;
-  text-align: center;
-  margin: 1rem 0;
-}
+  .sound-btn {
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 2px solid #c7a6ff;
+    background: #11183a;
+    color: #f5eaff;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 16px;
+  }
 
-.big-btn {
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.3rem;
-  border-radius: 1rem;
-  border: none;
-  background: var(--accent);
-  color: #000;
-  cursor: pointer;
-  margin-top: 1rem;
-  font-weight: 700;
-}
+  .sound-btn.active {
+    background: #c7a6ff;
+    color: #000;
+  }
 
-.big-btn:hover {
-  background: #b58aff;
-}
+  .volume-slider {
+    width: 100%;
+    margin-top: 15px;
+  }
 
-.volume-slider {
-  width: 100%;
-  margin-top: 0.5rem;
-}
+  input[type="number"] {
+    padding: 8px;
+    width: 90px;
+    border-radius: 10px;
+    border: 2px solid #c7a6ff;
+    background: #11183a;
+    color: #f5eaff;
+    margin-top: 10px;
+  }
+
+  #timerDisplay, #breathText {
+    color: #f5eaff;
+  }
 </style>
 </head>
 
 <body>
+<div class="container">
 
-<div class="header">
-  <a href="index.html" class="back">←</a>
-  <div class="title">Sleep Music</div>
-</div>
+  <!-- BACK BUTTON -->
+  <a href="index.html" class="back-btn">← Back to Menu</a>
 
-<div class="card">
+  <!-- TIMER AT THE TOP -->
+  <div class="section">
+    <h2>Timer</h2>
+    <p id="timerDisplay" style="font-size:22px;">00:00</p>
 
-  <div id="timerDisplay">00:00</div>
+    <div style="margin-top:10px;">
+      <button class="sound-btn" onclick="setTimer(1)">1 min</button>
+      <button class="sound-btn" onclick="setTimer(3)">3 min</button>
+      <button class="sound-btn" onclick="setTimer(5)">5 min</button>
+      <button class="sound-btn" onclick="setTimer(10)">10 min</button>
+    </div>
 
-  <label>Preset Timer</label>
-  <div style="display:flex; gap:0.5rem; margin:0.5rem 0;">
-    <button class="sound-btn" onclick="setTimer(5)">5 min</button>
-    <button class="sound-btn" onclick="setTimer(10)">10 min</button>
-    <button class="sound-btn" onclick="setTimer(20)">20 min</button>
+    <p style="margin-top:15px;">Custom minutes</p>
+    <input type="number" id="customMinutes" min="1" placeholder="min">
+    <button class="sound-btn" onclick="applyCustom()">Set</button>
   </div>
 
-  <label>Custom Minutes</label>
-  <input type="number" id="customMinutes" placeholder="e.g. 15"
-         style="width:100%; padding:0.7rem; border-radius:1rem; border:2px solid var(--accent); background:#11183a; color:var(--text); margin-top:0.3rem;"
-         oninput="applyCustom()">
+  <!-- BREATHING IN THE MIDDLE -->
+  <div class="section">
+    <h1>Take a Moment</h1>
+    <div class="breath-box" id="emojiBox">☺️</div>
+    <p id="breathText">breathe in…</p>
+    <button class="start-btn" id="startStopBtn">Start</button>
+  </div>
+
+  <!-- SOUNDS AT THE BOTTOM -->
+  <div class="section">
+    <h2>Sounds</h2>
+    <div>
+      <button class="sound-btn" data-sound="rain">🌧️ Rain</button>
+      <button class="sound-btn" data-sound="ocean">🌊 Ocean</button>
+      <button class="sound-btn" data-sound="wind">🍃 Wind</button>
+      <button class="sound-btn" data-sound="space">🪐 Space</button>
+    </div>
+
+    <p style="margin-top:15px;">Volume</p>
+    <input type="range" min="0" max="1" step="0.01" value="0.5"
+           id="volumeSlider" class="volume-slider">
+  </div>
 
 </div>
-
-<div class="card">
-  <h3 style="margin-bottom:1rem;">Choose Sounds</h3>
-
-  <button class="sound-btn" data-sound="rain">🌧️ Rain</button>
-  <button class="sound-btn" data-sound="ocean">🌊 Ocean</button>
-  <button class="sound-btn" data-sound="wind">🍃 Wind</button>
-  <button class="sound-btn" data-sound="space">🪐 Space</button>
-
-  <p style="margin-top:15px;">Volume</p>
-  <input type="range" min="0" max="1" step="0.01" value="0.5"
-         id="volumeSlider" class="volume-slider">
-
-  <button id="startStopBtn" class="big-btn">Start</button>
-</div>
-
-<script src="js/audioEngine.js"></script>
 
 <script>
+/* ---------------- BREATHING ---------------- */
+const emojis = ["☺️","💗","🪷","🌿","🌸","🌙","✨","🫧","🌊","💞"];
+let emojiIndex = 0;
+let breathingIn = true;
+let breathingInterval = null;
+
+const emojiBox = document.getElementById("emojiBox");
+const breathText = document.getElementById("breathText");
+const startStopBtn = document.getElementById("startStopBtn");
+
+function updateBreathing() {
+  emojiIndex = (emojiIndex + 1) % emojis.length;
+  emojiBox.innerText = emojis[emojiIndex];
+  breathingIn = !breathingIn;
+  breathText.innerText = breathingIn ? "breathe in…" : "breathe out…";
+}
+
+function startBreathing() {
+  breathingInterval = setInterval(updateBreathing, 4000);
+}
+
+function stopBreathing() {
+  clearInterval(breathingInterval);
+}
+
 /* ---------------- TIMER ---------------- */
 let timerInterval = null;
 let timeLeft = 0;
@@ -188,6 +242,69 @@ function stopTimer() {
   timerInterval = null;
 }
 
+/* ---------------- WEB AUDIO ---------------- */
+let audioCtx = null;
+let masterGain = null;
+
+const soundNodes = {
+  rain: null,
+  ocean: null,
+  wind: null,
+  space: null
+};
+
+function createNoise(type="white") {
+  const bufferSize = 2 * audioCtx.sampleRate;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+
+  let lastOut = 0;
+  for (let i = 0; i < bufferSize; i++) {
+    let white = Math.random() * 2 - 1;
+    if (type === "white") {
+      data[i] = white;
+    } else if (type === "brown") {
+      lastOut = (lastOut + (0.02 * white)) / 1.02;
+      data[i] = lastOut * 3.5;
+    }
+  }
+
+  const noise = audioCtx.createBufferSource();
+  noise.buffer = buffer;
+  noise.loop = true;
+  return noise;
+}
+
+function startSound(key) {
+  if (!audioCtx) return;
+  if (soundNodes[key]) return;
+
+  let node;
+
+  if (key === "rain") node = createNoise("white");
+  if (key === "ocean") node = createNoise("brown");
+  if (key === "wind") node = createNoise("white");
+  if (key === "space") {
+    node = audioCtx.createOscillator();
+    node.type = "sine";
+    node.frequency.value = 80;
+  }
+
+  const gain = audioCtx.createGain();
+  gain.gain.value = 0.4;
+
+  node.connect(gain).connect(masterGain);
+  node.start();
+
+  soundNodes[key] = { node, gain };
+}
+
+function stopSound(key) {
+  if (!soundNodes[key]) return;
+  try { soundNodes[key].node.stop(); } catch(e){}
+  soundNodes[key] = null;
+}
+
 /* ---------------- SESSION CONTROL ---------------- */
 let running = false;
 
@@ -196,19 +313,28 @@ startStopBtn.addEventListener("click", () => {
     running = true;
     startStopBtn.textContent = "Stop";
 
-    DreamHavenAudio.init();
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.5;
+      masterGain.connect(audioCtx.destination);
+    }
+
+    startBreathing();
     startTimer();
 
     document.querySelectorAll(".sound-btn.active").forEach(btn => {
-      DreamHavenAudio.startSound(btn.dataset.sound);
+      startSound(btn.dataset.sound);
     });
 
   } else {
     running = false;
     startStopBtn.textContent = "Start";
 
+    stopBreathing();
     stopTimer();
-    DreamHavenAudio.stopAll();
+
+    Object.keys(soundNodes).forEach(key => stopSound(key));
   }
 });
 
@@ -218,20 +344,19 @@ document.querySelectorAll(".sound-btn").forEach(btn => {
     btn.classList.toggle("active");
 
     if (running) {
-      if (btn.classList.contains("active"))
-        DreamHavenAudio.startSound(btn.dataset.sound);
-      else
-        DreamHavenAudio.stopSound(btn.dataset.sound);
+      if (btn.classList.contains("active")) startSound(btn.dataset.sound);
+      else stopSound(btn.dataset.sound);
     }
   });
 });
 
 /* ---------------- VOLUME ---------------- */
 document.getElementById("volumeSlider").addEventListener("input", e => {
-  DreamHavenAudio.setVolume(e.target.value);
+  if (masterGain) masterGain.gain.value = e.target.value;
 });
 </script>
 
 </body>
 </html>
+  
                 
