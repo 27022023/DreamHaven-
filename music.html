@@ -6,92 +6,135 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --bg: #b9f3f0;
-      --card-bg: #ffffff;
-      --text-dark: #111111;
+      --bg: #e8d8ff; /* pastel lavender */
+      --card-bg: #f7f0ff;
+      --accent: #c8a8ff;
+      --text-dark: #2a1f3d;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
     body {
       background: var(--bg);
       color: var(--text-dark);
       min-height: 100vh;
     }
-    .section { padding: 1rem 1.25rem 1.5rem; }
+
+    .section {
+      padding: 1.5rem;
+    }
+
     .section-header {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-size: 1.8rem;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 15px rgba(200, 168, 255, 0.4);
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
       margin-bottom: 1rem;
     }
-    .back-link { text-decoration: none; color: var(--text-dark); font-size: 1.3rem; }
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    .card {
-      background: rgba(255,255,255,0.9);
-      border-radius: 1rem;
-      border: 1px solid rgba(0,0,0,0.08);
-      padding: 0.75rem 0.9rem;
-      margin-bottom: 0.75rem;
-    }
-    .card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+
     .track-list {
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
-      margin-bottom: 0.5rem;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
     }
+
     .track-item {
-      padding: 0.4rem 0.6rem;
-      border-radius: 0.6rem;
-      background: rgba(255,255,255,0.9);
+      padding: 1rem;
+      border-radius: 1rem;
+      background: white;
+      border: 2px solid var(--accent);
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 1rem;
+      transition: 0.2s;
     }
+
+    .track-item:hover {
+      background: #f0e4ff;
+    }
+
     .track-item.active {
-      background: #7be0d6;
+      background: var(--accent);
+      color: white;
       font-weight: 600;
     }
+
     label {
-      font-size: 0.8rem;
-      opacity: 0.8;
+      font-size: 1rem;
+      margin-top: 1rem;
       display: block;
-      margin-bottom: 0.25rem;
     }
+
     select, input[type="number"] {
       width: 100%;
-      padding: 0.4rem 0.5rem;
-      border-radius: 0.5rem;
-      border: 1px solid rgba(0,0,0,0.15);
-      background: rgba(255,255,255,0.95);
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
+      padding: 0.8rem;
+      border-radius: 1rem;
+      border: 2px solid var(--accent);
+      background: white;
+      font-size: 1rem;
+      margin-top: 0.3rem;
     }
-    .small-btn {
-      padding: 0.4rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.15);
-      background: rgba(255,255,255,0.9);
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
-    .small-btn:hover { background: #e4fbf8; }
-    .audio-controls {
+
+    .buttons {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-      font-size: 0.85rem;
+      gap: 1rem;
+      margin-top: 1rem;
     }
-    .hint { font-size: 0.8rem; opacity: 0.7; margin-top: 0.4rem; }
-    @media (min-width: 768px) {
-      .section { padding: 1.5rem 2.5rem 2rem; }
+
+    .btn {
+      flex: 1;
+      padding: 1rem;
+      border-radius: 1rem;
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #b38aff;
+    }
+
+    #musicStatus {
+      margin-top: 1rem;
+      font-size: 1rem;
+      opacity: 0.8;
     }
   </style>
 </head>
+
 <body>
   <section class="section">
     <div class="section-header">
@@ -100,11 +143,14 @@
     </div>
 
     <div class="card">
-      <h3>Pick your sound</h3>
+      <h3>Choose your sound</h3>
+
       <div class="track-list" id="trackList">
         <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2021/09/30/audio_4b4b4f3f4a.mp3?filename=soft-piano-ambient-110397.mp3">Soft Piano</div>
         <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_9f4f5c4b4b.mp3?filename=rain-ambience-6101.mp3">Rain Ambience</div>
+        <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3e8b4b4b4b.mp3?filename=ocean-waves.mp3">Ocean Waves</div>
         <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2021/09/01/audio_3f3f4b4b4b.mp3?filename=forest-night-ambient-11023.mp3">Forest Night</div>
+        <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2022/01/12/audio_4b4b4b4b4b.mp3?filename=deep-sleep-frequency.mp3">Deep Sleep Frequencies</div>
       </div>
 
       <label for="durationSelect">Duration</label>
@@ -112,96 +158,78 @@
         <option value="600">10 minutes</option>
         <option value="1200">20 minutes</option>
         <option value="3600">1 hour</option>
-        <option value="0">Custom (enter minutes below)</option>
+        <option value="0">Custom</option>
       </select>
 
-      <label for="customMinutes">Custom minutes (optional)</label>
-      <input type="number" id="customMinutes" min="1" max="300" placeholder="e.g. 45" />
+      <label for="customMinutes">Custom minutes</label>
+      <input type="number" id="customMinutes" placeholder="e.g. 45" />
 
-      <div class="audio-controls">
-        <button class="small-btn" id="playMusicBtn">Play</button>
-        <button class="small-btn" id="pauseMusicBtn">Pause</button>
-        <span id="musicStatus">No track playing</span>
+      <div class="buttons">
+        <button class="btn" id="playMusicBtn">Play</button>
+        <button class="btn" id="pauseMusicBtn">Pause</button>
       </div>
 
-      <p class="hint">
-        You can open <strong>Constellation Sky</strong> in another tab and start the same track there to gaze at the stars while listening ✨
-      </p>
+      <div id="musicStatus">No track selected</div>
     </div>
 
-    <audio id="audio" loop></audio>
+    <audio id="audio" preload="none"></audio>
   </section>
 
   <script>
-    const audio = document.getElementById('audio');
-    const trackList = document.getElementById('trackList');
-    const playMusicBtn = document.getElementById('playMusicBtn');
-    const pauseMusicBtn = document.getElementById('pauseMusicBtn');
-    const durationSelect = document.getElementById('durationSelect');
-    const customMinutes = document.getElementById('customMinutes');
-    const musicStatus = document.getElementById('musicStatus');
+    const audio = document.getElementById("audio");
+    const trackList = document.getElementById("trackList");
+    const playBtn = document.getElementById("playMusicBtn");
+    const pauseBtn = document.getElementById("pauseMusicBtn");
+    const durationSelect = document.getElementById("durationSelect");
+    const customMinutes = document.getElementById("customMinutes");
+    const musicStatus = document.getElementById("musicStatus");
 
-    let currentTrackSrc = null;
-    let timerId = null;
+    let currentTrack = null;
+    let timer = null;
 
-    function selectTrack(el) {
-      document.querySelectorAll('.track-item').forEach(t => t.classList.remove('active'));
-      el.classList.add('active');
-      currentTrackSrc = el.getAttribute('data-src');
-      audio.src = currentTrackSrc;
-      musicStatus.textContent = 'Track selected: ' + el.textContent;
-    }
-
-    trackList.addEventListener('click', (e) => {
-      const item = e.target.closest('.track-item');
+    trackList.addEventListener("click", (e) => {
+      const item = e.target.closest(".track-item");
       if (!item) return;
-      selectTrack(item);
+
+      document.querySelectorAll(".track-item").forEach(t => t.classList.remove("active"));
+      item.classList.add("active");
+
+      currentTrack = item.dataset.src;
+      audio.src = currentTrack;
+      musicStatus.textContent = "Track selected: " + item.textContent;
     });
 
-    function getDurationSeconds() {
-      const base = parseInt(durationSelect.value, 10);
-      if (base === 0) {
-        const custom = parseInt(customMinutes.value, 10);
-        if (!isNaN(custom) && custom > 0) {
-          return custom * 60;
-        }
-        return 0;
+    playBtn.addEventListener("click", () => {
+      if (!currentTrack) {
+        musicStatus.textContent = "Please select a track first";
+        return;
       }
-      return base;
-    }
 
-    function playMusic() {
-      if (!currentTrackSrc) {
-        const first = document.querySelector('.track-item');
-        if (first) selectTrack(first);
-      }
       audio.play();
-      musicStatus.textContent = 'Playing...';
+      musicStatus.textContent = "Playing…";
 
-      if (timerId) {
-        clearTimeout(timerId);
-        timerId = null;
+      if (timer) clearTimeout(timer);
+
+      let seconds = parseInt(durationSelect.value);
+      if (seconds === 0) {
+        const custom = parseInt(customMinutes.value);
+        if (!isNaN(custom)) seconds = custom * 60;
       }
-      const seconds = getDurationSeconds();
+
       if (seconds > 0) {
-        timerId = setTimeout(() => {
+        timer = setTimeout(() => {
           audio.pause();
-          musicStatus.textContent = 'Timer ended';
+          musicStatus.textContent = "Timer ended";
         }, seconds * 1000);
       }
-    }
+    });
 
-    function pauseMusic() {
+    pauseBtn.addEventListener("click", () => {
       audio.pause();
-      musicStatus.textContent = 'Paused';
-      if (timerId) {
-        clearTimeout(timerId);
-        timerId = null;
-      }
-    }
-
-    playMusicBtn.addEventListener('click', playMusic);
-    pauseMusicBtn.addEventListener('click', pauseMusic);
+      musicStatus.textContent = "Paused";
+      if (timer) clearTimeout(timer);
+    });
   </script>
 </body>
 </html>
+    
