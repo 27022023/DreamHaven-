@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dream Haven – Bedtime Routine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #c9e4ff;
+      --card-bg: #ffffff;
+      --text-dark: #111111;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body {
+      background: var(--bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+    .section { padding: 1rem 1.25rem 1.5rem; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .back-link { text-decoration: none; color: var(--text-dark); font-size: 1.3rem; }
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .card {
+      background: rgba(255,255,255,0.9);
+      border-radius: 1rem;
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 0.75rem 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+    .card h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+    label {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(0,0,0,0.15);
+      background: rgba(255,255,255,0.95);
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    .small-btn {
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.15);
+      background: rgba(255,255,255,0.9);
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .small-btn:hover { background: #f0f4ff; }
+    .habit-list {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .habit-item {
+      padding: 0.25rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .routine-steps {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .notification-preview {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 0.75rem;
+      background: #f0f4ff;
+    }
+    @media (min-width: 768px) {
+      .section { padding: 1.5rem 2.5rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="section-header">
+      <a href="index.html" class="back-link">←</a>
+      <span class="section-title">Bedtime Routine</span>
+    </div>
+
+    <div class="card">
+      <h3>Your sleep goal</h3>
+      <label for="bedtimeInput">Target bedtime (24h, e.g. 23:00)</label>
+      <input type="time" id="bedtimeInput" />
+      <label for="windDownSelect">Wind-down duration</label>
+      <select id="windDownSelect">
+        <option value="30">30 minutes</option>
+        <option value="45">45 minutes</option>
+        <option value="60">60 minutes</option>
+        <option value="90">90 minutes</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h3>Your habits & goals</h3>
+      <label for="habitInput">Add a habit (e.g. “Read a book”, “Skincare”, “Stretching”)</label>
+      <input type="text" id="habitInput" placeholder="Type a habit and click Add" />
+      <button class="small-btn" id="addHabitBtn">Add habit</button>
+      <div class="habit-list" id="habitList"></div>
+    </div>
+
+    <div class="card">
+      <h3>Generated bedtime routine</h3>
+      <button class="small-btn" id="generateRoutineBtn">Generate routine</button>
+      <div class="routine-steps" id="routineSteps" style="margin-top:0.5rem;"></div>
+      <div class="notification-preview" id="notificationPreview" style="display:none;">
+        <strong>Notification example:</strong><br>
+        Time for bed!! 💤 Sleep well and sweet dreams!! 😊💫🌙☄️🌌
+      </div>
+      <p style="font-size:0.8rem;opacity:0.7;margin-top:0.4rem;">
+        Real phone notifications need browser permission and a backend or PWA setup, but this shows exactly what it will say.
+      </p>
+    </div>
+  </section>
+
+  <script>
+    const habitInput = document.getElementById('habitInput');
+    const addHabitBtn = document.getElementById('addHabitBtn');
+    const habitList = document.getElementById('habitList');
+    const bedtimeInput = document.getElementById('bedtimeInput');
+    const windDownSelect = document.getElementById('windDownSelect');
+    const generateRoutineBtn = document.getElementById('generateRoutineBtn');
+    const routineSteps = document.getElementById('routineSteps');
+    const notificationPreview = document.getElementById('notificationPreview');
+
+    let habits = [];
+
+    function renderHabits() {
+      habitList.innerHTML = '';
+      if (habits.length === 0) {
+        habitList.innerHTML = '<p style="opacity:0.7;">No habits added yet. Add things like reading, journaling, skincare, stretching…</p>';
+        return;
+      }
+      habits.forEach((h, idx) => {
+        const div = document.createElement('div');
+        div.className = 'habit-item';
+        div.innerHTML = `${idx + 1}. ${h}`;
+        habitList.appendChild(div);
+      });
+    }
+
+    addHabitBtn.addEventListener('click', () => {
+      const val = habitInput.value.trim();
+      if (!val) return;
+      habits.push(val);
+      habitInput.value = '';
+      renderHabits();
+    });
+
+    function parseTimeToMinutes(t) {
+      if (!t) return null;
+      const [h, m] = t.split(':').map(Number);
+      return h * 60 + m;
+    }
+    function minutesToTimeStr(mins) {
+      mins = (mins + 24 * 60) % (24 * 60);
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    }
+
+    generateRoutineBtn.addEventListener('click', () => {
+      const bedtime = parseTimeToMinutes(bedtimeInput.value);
+      const windDown = parseInt(windDownSelect.value, 10);
+      if (bedtime === null) {
+        alert('Please set your target bedtime.');
+        return;
+      }
+      const start = bedtime - windDown;
+      let steps = [];
+      const baseHabits = habits.length > 0 ? habits : ['Turn off screens', 'Brush teeth', 'Skincare', 'Read a few pages', 'Gratitude journaling'];
+
+      const stepDuration = Math.max(10, Math.floor(windDown / baseHabits.length));
+      let currentTime = start;
+      baseHabits.forEach(h => {
+        const timeStr = minutesToTimeStr(currentTime);
+        steps.push(`${timeStr} – ${h}`);
+        currentTime += stepDuration;
+      });
+      steps.push(`${minutesToTimeStr(bedtime)} – Lights off, cozy in bed 💤`);
+
+      routineSteps.innerHTML = steps.map(s => `• ${s}`).join('<br>');
+      notificationPreview.style.display = 'block';
+    });
+
+    window.addEventListener('load', () => {
+      renderHabits();
+    });
+  </script>
+</body>
+</html>
