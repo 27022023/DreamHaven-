@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dream Haven – Sleep Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --purple-bg: #140b33;
+      --text-light: #f7f7ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body {
+      background: radial-gradient(circle at top, #3b237a, #0a031b);
+      color: var(--text-light);
+      min-height: 100vh;
+    }
+    .section {
+      padding: 1rem 1.25rem 1.5rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .back-link {
+      text-decoration: none;
+      color: var(--text-light);
+      font-size: 1.3rem;
+    }
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .pill {
+      flex: 1 1 140px;
+      min-height: 90px;
+      border-radius: 999px;
+      background: rgba(10, 5, 40, 0.9);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.25rem;
+    }
+    .pill-label {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .pill-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .card {
+      background: rgba(10, 5, 40, 0.9);
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 0.75rem 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+    .card h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.9;
+    }
+    .input-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(5, 2, 25, 0.9);
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+    textarea { min-height: 70px; resize: vertical; }
+    label {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .small-btn {
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.05);
+      color: var(--text-light);
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .small-btn:hover { background: rgba(255,255,255,0.12); }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.25rem;
+      font-size: 0.8rem;
+    }
+    .calendar-day {
+      text-align: center;
+      padding: 0.25rem 0;
+      border-radius: 0.5rem;
+      background: rgba(255,255,255,0.05);
+    }
+    .dream-list {
+      max-height: 150px;
+      overflow-y: auto;
+      font-size: 0.8rem;
+    }
+    .dream-item {
+      padding: 0.25rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .chart-row {
+      display: flex;
+      gap: 0.25rem;
+      align-items: flex-end;
+      height: 120px;
+      margin-top: 0.5rem;
+    }
+    .chart-bar {
+      flex: 1;
+      background: rgba(255,255,255,0.2);
+      border-radius: 0.25rem 0.25rem 0 0;
+      position: relative;
+    }
+    .chart-bar span {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.7rem;
+      opacity: 0.8;
+    }
+    .chart-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    @media (min-width: 768px) {
+      .section { padding: 1.5rem 2.5rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="section-header">
+      <a href="index.html" class="back-link">←</a>
+      <span class="section-title">Sleep Tracker</span>
+    </div>
+
+    <div class="pill-row">
+      <div class="pill">
+        <div class="pill-label">Today</div>
+        <div class="pill-value" id="todayHours">– h</div>
+      </div>
+      <div class="pill">
+        <div class="pill-label">Best Night (7 days)</div>
+        <div class="pill-value" id="bestNight">– h</div>
+      </div>
+      <div class="pill">
+        <div class="pill-label">Average (7 days)</div>
+        <div class="pill-value" id="avgNight">– h</div>
+      </div>
+      <div class="pill">
+        <div class="pill-label">Dreams (7 days)</div>
+        <div class="pill-value" id="dreamCount">–</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Log last night</h3>
+      <div class="input-row">
+        <div style="flex:1;">
+          <label for="hoursInput">Hours slept</label>
+          <input type="number" id="hoursInput" min="0" max="14" step="0.25" placeholder="e.g. 7.5" />
+        </div>
+        <div style="flex:1;">
+          <label for="qualitySelect">Sleep emoji</label>
+          <select id="qualitySelect">
+            <option value="😴">😴 Great</option>
+            <option value="🙂">🙂 Okay</option>
+            <option value="😕">😕 Bad</option>
+            <option value="😵‍💫">😵‍💫 Nightmare</option>
+          </select>
+        </div>
+      </div>
+      <label for="dreamInput">Dream journal (optional)</label>
+      <textarea id="dreamInput" placeholder="Write about your dream..."></textarea>
+      <button class="small-btn" id="saveEntryBtn" style="margin-top:0.5rem;">Save entry</button>
+    </div>
+
+    <div class="card">
+      <h3>Week overview (last 7 days)</h3>
+      <div class="calendar-grid" id="calendarGrid"></div>
+      <p style="font-size:0.8rem;opacity:0.7;margin-top:0.4rem;">
+        Each day shows your sleep emoji. Keep logging to see your week fill up 🌙
+      </p>
+      <div class="chart-row" id="chartRow"></div>
+      <div class="chart-labels" id="chartLabels"></div>
+    </div>
+
+    <div class="card">
+      <h3>Dream journal (recent)</h3>
+      <div class="dream-list" id="dreamList"></div>
+    </div>
+  </section>
+
+  <script>
+    function getTodayKey() {
+      const d = new Date();
+      return d.toISOString().slice(0, 10);
+    }
+    function loadEntries() {
+      const raw = localStorage.getItem('dreamHavenEntries');
+      return raw ? JSON.parse(raw) : {};
+    }
+    function saveEntries(entries) {
+      localStorage.setItem('dreamHavenEntries', JSON.stringify(entries));
+    }
+    function getLast7Dates() {
+      const dates = [];
+      const today = new Date();
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        dates.push(d.toISOString().slice(0, 10));
+      }
+      return dates;
+    }
+
+    const hoursInput = document.getElementById('hoursInput');
+    const qualitySelect = document.getElementById('qualitySelect');
+    const dreamInput = document.getElementById('dreamInput');
+    const saveEntryBtn = document.getElementById('saveEntryBtn');
+    const todayHoursEl = document.getElementById('todayHours');
+    const bestNightEl = document.getElementById('bestNight');
+    const avgNightEl = document.getElementById('avgNight');
+    const dreamCountEl = document.getElementById('dreamCount');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const dreamList = document.getElementById('dreamList');
+    const chartRow = document.getElementById('chartRow');
+    const chartLabels = document.getElementById('chartLabels');
+
+    function saveEntry() {
+      const hours = parseFloat(hoursInput.value);
+      if (isNaN(hours)) {
+        alert('Please enter how many hours you slept.');
+        return;
+      }
+      const emoji = qualitySelect.value || '🙂';
+      const dream = dreamInput.value.trim();
+      const key = getTodayKey();
+      const entries = loadEntries();
+      entries[key] = { date: key, hours, emoji, dream };
+      saveEntries(entries);
+      hoursInput.value = '';
+      dreamInput.value = '';
+      updateUI();
+    }
+
+    function updateUI() {
+      const entries = loadEntries();
+      const todayKey = getTodayKey();
+      const todayEntry = entries[todayKey];
+
+      if (todayEntry) {
+        todayHoursEl.textContent = todayEntry.hours + ' h';
+      } else {
+        todayHoursEl.textContent = '– h';
+      }
+
+      const last7Dates = getLast7Dates();
+      const last7 = last7Dates.map(d => entries[d]).filter(Boolean);
+      if (last7.length > 0) {
+        const best = last7.reduce((max, e) => e.hours > max ? e.hours : max, 0);
+        const total = last7.reduce((sum, e) => sum + e.hours, 0);
+        const avg = total / last7.length;
+        bestNightEl.textContent = best.toFixed(1) + ' h';
+        avgNightEl.textContent = avg.toFixed(1) + ' h';
+        const dreams = last7.filter(e => e.dream && e.dream.length > 0).length;
+        dreamCountEl.textContent = dreams;
+      } else {
+        bestNightEl.textContent = '– h';
+        avgNightEl.textContent = '– h';
+        dreamCountEl.textContent = '–';
+      }
+
+      calendarGrid.innerHTML = '';
+      chartRow.innerHTML = '';
+      chartLabels.innerHTML = '';
+      const maxHours = 10;
+      last7Dates.forEach(dateStr => {
+        const e = entries[dateStr];
+        const dayName = new Date(dateStr).toLocaleDateString(undefined, { weekday: 'short' });
+
+        const calDiv = document.createElement('div');
+        calDiv.className = 'calendar-day';
+        calDiv.textContent = e ? e.emoji : '·';
+        calDiv.title = dayName + ' (' + dateStr + ')';
+        calendarGrid.appendChild(calDiv);
+
+        const bar = document.createElement('div');
+        bar.className = 'chart-bar';
+        const h = e ? e.hours : 0;
+        bar.style.height = (h / maxHours * 100 || 2) + '%';
+        const label = document.createElement('span');
+        label.textContent = e ? h.toFixed(1) : '';
+        bar.appendChild(label);
+        chartRow.appendChild(bar);
+
+        const dayLabel = document.createElement('div');
+        dayLabel.textContent = dayName[0];
+        chartLabels.appendChild(dayLabel);
+      });
+
+      dreamList.innerHTML = '';
+      const dreams = Object.values(entries)
+        .filter(e => e.dream && e.dream.length > 0)
+        .sort((a, b) => b.date.localeCompare(a.date))
+        .slice(0, 30);
+      if (dreams.length === 0) {
+        dreamList.innerHTML = '<p style="opacity:0.7;">No dreams logged yet. Write about them here when you remember 🌙</p>';
+      } else {
+        dreams.forEach(e => {
+          const div = document.createElement('div');
+          div.className = 'dream-item';
+          div.innerHTML = `<strong>${e.date}</strong><br>${e.dream}`;
+          dreamList.appendChild(div);
+        });
+      }
+    }
+
+    saveEntryBtn.addEventListener('click', saveEntry);
+    window.addEventListener('load', updateUI);
+  </script>
+</body>
+</html>
