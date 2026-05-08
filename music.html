@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dream Haven – Sleep Music</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #b9f3f0;
+      --card-bg: #ffffff;
+      --text-dark: #111111;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body {
+      background: var(--bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+    .section { padding: 1rem 1.25rem 1.5rem; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .back-link { text-decoration: none; color: var(--text-dark); font-size: 1.3rem; }
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .card {
+      background: rgba(255,255,255,0.9);
+      border-radius: 1rem;
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 0.75rem 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+    .card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .track-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .track-item {
+      padding: 0.4rem 0.6rem;
+      border-radius: 0.6rem;
+      background: rgba(255,255,255,0.9);
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .track-item.active {
+      background: #7be0d6;
+      font-weight: 600;
+    }
+    label {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    select, input[type="number"] {
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(0,0,0,0.15);
+      background: rgba(255,255,255,0.95);
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    .small-btn {
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.15);
+      background: rgba(255,255,255,0.9);
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .small-btn:hover { background: #e4fbf8; }
+    .audio-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .hint { font-size: 0.8rem; opacity: 0.7; margin-top: 0.4rem; }
+    @media (min-width: 768px) {
+      .section { padding: 1.5rem 2.5rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="section-header">
+      <a href="index.html" class="back-link">←</a>
+      <span class="section-title">Sleep Music</span>
+    </div>
+
+    <div class="card">
+      <h3>Pick your sound</h3>
+      <div class="track-list" id="trackList">
+        <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2021/09/30/audio_4b4b4f3f4a.mp3?filename=soft-piano-ambient-110397.mp3">Soft Piano</div>
+        <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_9f4f5c4b4b.mp3?filename=rain-ambience-6101.mp3">Rain Ambience</div>
+        <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2021/09/01/audio_3f3f4b4b4b.mp3?filename=forest-night-ambient-11023.mp3">Forest Night</div>
+      </div>
+
+      <label for="durationSelect">Duration</label>
+      <select id="durationSelect">
+        <option value="600">10 minutes</option>
+        <option value="1200">20 minutes</option>
+        <option value="3600">1 hour</option>
+        <option value="0">Custom (enter minutes below)</option>
+      </select>
+
+      <label for="customMinutes">Custom minutes (optional)</label>
+      <input type="number" id="customMinutes" min="1" max="300" placeholder="e.g. 45" />
+
+      <div class="audio-controls">
+        <button class="small-btn" id="playMusicBtn">Play</button>
+        <button class="small-btn" id="pauseMusicBtn">Pause</button>
+        <span id="musicStatus">No track playing</span>
+      </div>
+
+      <p class="hint">
+        You can open <strong>Constellation Sky</strong> in another tab and start the same track there to gaze at the stars while listening ✨
+      </p>
+    </div>
+
+    <audio id="audio" loop></audio>
+  </section>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const trackList = document.getElementById('trackList');
+    const playMusicBtn = document.getElementById('playMusicBtn');
+    const pauseMusicBtn = document.getElementById('pauseMusicBtn');
+    const durationSelect = document.getElementById('durationSelect');
+    const customMinutes = document.getElementById('customMinutes');
+    const musicStatus = document.getElementById('musicStatus');
+
+    let currentTrackSrc = null;
+    let timerId = null;
+
+    function selectTrack(el) {
+      document.querySelectorAll('.track-item').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      currentTrackSrc = el.getAttribute('data-src');
+      audio.src = currentTrackSrc;
+      musicStatus.textContent = 'Track selected: ' + el.textContent;
+    }
+
+    trackList.addEventListener('click', (e) => {
+      const item = e.target.closest('.track-item');
+      if (!item) return;
+      selectTrack(item);
+    });
+
+    function getDurationSeconds() {
+      const base = parseInt(durationSelect.value, 10);
+      if (base === 0) {
+        const custom = parseInt(customMinutes.value, 10);
+        if (!isNaN(custom) && custom > 0) {
+          return custom * 60;
+        }
+        return 0;
+      }
+      return base;
+    }
+
+    function playMusic() {
+      if (!currentTrackSrc) {
+        const first = document.querySelector('.track-item');
+        if (first) selectTrack(first);
+      }
+      audio.play();
+      musicStatus.textContent = 'Playing...';
+
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+      const seconds = getDurationSeconds();
+      if (seconds > 0) {
+        timerId = setTimeout(() => {
+          audio.pause();
+          musicStatus.textContent = 'Timer ended';
+        }, seconds * 1000);
+      }
+    }
+
+    function pauseMusic() {
+      audio.pause();
+      musicStatus.textContent = 'Paused';
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+    }
+
+    playMusicBtn.addEventListener('click', playMusic);
+    pauseMusicBtn.addEventListener('click', pauseMusic);
+  </script>
+</body>
+</html>
