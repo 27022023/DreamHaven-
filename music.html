@@ -1,235 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Dream Haven – Sleep Music</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg: #e8d8ff; /* pastel lavender */
-      --card-bg: #f7f0ff;
-      --accent: #c8a8ff;
-      --text-dark: #2a1f3d;
-    }
+<meta charset="UTF-8">
+<title>Dream Haven – Sleep Music</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", system-ui, sans-serif;
-    }
+<style>
+:root {
+  --bg: #0a0f2d;
+  --card: #1a224d;
+  --accent: #c7a6ff;
+  --text: #f5eaff;
+}
 
-    body {
-      background: var(--bg);
-      color: var(--text-dark);
-      min-height: 100vh;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
 
-    .section {
-      padding: 1.5rem;
-    }
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 1.5rem;
+}
 
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
 
-    .back-link {
-      text-decoration: none;
-      color: var(--text-dark);
-      font-size: 1.8rem;
-    }
+.back {
+  font-size: 2rem;
+  text-decoration: none;
+  color: var(--text);
+}
 
-    .section-title {
-      font-size: 1.6rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-    }
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
 
-    .card {
-      background: var(--card-bg);
-      border-radius: 1.5rem;
-      padding: 1.2rem;
-      margin-bottom: 1.5rem;
-      border: 2px solid var(--accent);
-      box-shadow: 0 0 15px rgba(200, 168, 255, 0.4);
-    }
+.card {
+  background: var(--card);
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 20px rgba(199,166,255,0.3);
+  margin-bottom: 1.5rem;
+}
 
-    .card h3 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-    }
+.sound-btn {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+  border-radius: 1rem;
+  border: 2px solid var(--accent);
+  background: #11183a;
+  color: var(--text);
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-    .track-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
-    }
+.sound-btn.active {
+  background: var(--accent);
+  color: #000;
+  font-weight: 700;
+}
 
-    .track-item {
-      padding: 1rem;
-      border-radius: 1rem;
-      background: white;
-      border: 2px solid var(--accent);
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.2s;
-    }
+#timerDisplay {
+  font-size: 2.2rem;
+  text-align: center;
+  margin: 1rem 0;
+}
 
-    .track-item:hover {
-      background: #f0e4ff;
-    }
+.big-btn {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.3rem;
+  border-radius: 1rem;
+  border: none;
+  background: var(--accent);
+  color: #000;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-weight: 700;
+}
 
-    .track-item.active {
-      background: var(--accent);
-      color: white;
-      font-weight: 600;
-    }
+.big-btn:hover {
+  background: #b58aff;
+}
 
-    label {
-      font-size: 1rem;
-      margin-top: 1rem;
-      display: block;
-    }
-
-    select, input[type="number"] {
-      width: 100%;
-      padding: 0.8rem;
-      border-radius: 1rem;
-      border: 2px solid var(--accent);
-      background: white;
-      font-size: 1rem;
-      margin-top: 0.3rem;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .btn {
-      flex: 1;
-      padding: 1rem;
-      border-radius: 1rem;
-      border: none;
-      background: var(--accent);
-      color: white;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .btn:hover {
-      background: #b38aff;
-    }
-
-    #musicStatus {
-      margin-top: 1rem;
-      font-size: 1rem;
-      opacity: 0.8;
-    }
-  </style>
+.volume-slider {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+</style>
 </head>
 
 <body>
-  <section class="section">
-    <div class="section-header">
-      <a href="index.html" class="back-link">←</a>
-      <span class="section-title">Sleep Music</span>
-    </div>
 
-    <div class="card">
-      <h3>Choose your sound</h3>
+<div class="header">
+  <a href="index.html" class="back">←</a>
+  <div class="title">Sleep Music</div>
+</div>
 
-      <div class="track-list" id="trackList">
-        <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2021/09/30/audio_4b4b4f3f4a.mp3?filename=soft-piano-ambient-110397.mp3">Soft Piano</div>
-        <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_9f4f5c4b4b.mp3?filename=rain-ambience-6101.mp3">Rain Ambience</div>
-        <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3e8b4b4b4b.mp3?filename=ocean-waves.mp3">Ocean Waves</div>
-        <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2021/09/01/audio_3f3f4b4b4b.mp3?filename=forest-night-ambient-11023.mp3">Forest Night</div>
-        <div class="track-item" data-src="https://cdn.pixabay.com/download/audio/2022/01/12/audio_4b4b4b4b4b.mp3?filename=deep-sleep-frequency.mp3">Deep Sleep Frequencies</div>
-      </div>
+<div class="card">
 
-      <label for="durationSelect">Duration</label>
-      <select id="durationSelect">
-        <option value="600">10 minutes</option>
-        <option value="1200">20 minutes</option>
-        <option value="3600">1 hour</option>
-        <option value="0">Custom</option>
-      </select>
+  <div id="timerDisplay">00:00</div>
 
-      <label for="customMinutes">Custom minutes</label>
-      <input type="number" id="customMinutes" placeholder="e.g. 45" />
+  <label>Preset Timer</label>
+  <div style="display:flex; gap:0.5rem; margin:0.5rem 0;">
+    <button class="sound-btn" onclick="setTimer(5)">5 min</button>
+    <button class="sound-btn" onclick="setTimer(10)">10 min</button>
+    <button class="sound-btn" onclick="setTimer(20)">20 min</button>
+  </div>
 
-      <div class="buttons">
-        <button class="btn" id="playMusicBtn">Play</button>
-        <button class="btn" id="pauseMusicBtn">Pause</button>
-      </div>
+  <label>Custom Minutes</label>
+  <input type="number" id="customMinutes" placeholder="e.g. 15"
+         style="width:100%; padding:0.7rem; border-radius:1rem; border:2px solid var(--accent); background:#11183a; color:var(--text); margin-top:0.3rem;"
+         oninput="applyCustom()">
 
-      <div id="musicStatus">No track selected</div>
-    </div>
+</div>
 
-    <audio id="audio" preload="none"></audio>
-  </section>
+<div class="card">
+  <h3 style="margin-bottom:1rem;">Choose Sounds</h3>
 
-  <script>
-    const audio = document.getElementById("audio");
-    const trackList = document.getElementById("trackList");
-    const playBtn = document.getElementById("playMusicBtn");
-    const pauseBtn = document.getElementById("pauseMusicBtn");
-    const durationSelect = document.getElementById("durationSelect");
-    const customMinutes = document.getElementById("customMinutes");
-    const musicStatus = document.getElementById("musicStatus");
+  <button class="sound-btn" data-sound="rain">🌧️ Rain</button>
+  <button class="sound-btn" data-sound="ocean">🌊 Ocean</button>
+  <button class="sound-btn" data-sound="wind">🍃 Wind</button>
+  <button class="sound-btn" data-sound="space">🪐 Space</button>
 
-    let currentTrack = null;
-    let timer = null;
+  <p style="margin-top:15px;">Volume</p>
+  <input type="range" min="0" max="1" step="0.01" value="0.5"
+         id="volumeSlider" class="volume-slider">
 
-    trackList.addEventListener("click", (e) => {
-      const item = e.target.closest(".track-item");
-      if (!item) return;
+  <button id="startStopBtn" class="big-btn">Start</button>
+</div>
 
-      document.querySelectorAll(".track-item").forEach(t => t.classList.remove("active"));
-      item.classList.add("active");
+<script src="js/audioEngine.js"></script>
 
-      currentTrack = item.dataset.src;
-      audio.src = currentTrack;
-      musicStatus.textContent = "Track selected: " + item.textContent;
+<script>
+/* ---------------- TIMER ---------------- */
+let timerInterval = null;
+let timeLeft = 0;
+
+function setTimer(minutes) {
+  timeLeft = minutes * 60;
+  updateTimerDisplay();
+}
+
+function applyCustom() {
+  const val = parseInt(document.getElementById("customMinutes").value);
+  if (!isNaN(val) && val > 0) {
+    setTimer(val);
+  }
+}
+
+function updateTimerDisplay() {
+  const mins = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+  const secs = String(timeLeft % 60).padStart(2, "0");
+  document.getElementById("timerDisplay").textContent = `${mins}:${secs}`;
+}
+
+function startTimer() {
+  if (timeLeft <= 0) return;
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      startStopBtn.click();
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+/* ---------------- SESSION CONTROL ---------------- */
+let running = false;
+
+startStopBtn.addEventListener("click", () => {
+  if (!running) {
+    running = true;
+    startStopBtn.textContent = "Stop";
+
+    DreamHavenAudio.init();
+    startTimer();
+
+    document.querySelectorAll(".sound-btn.active").forEach(btn => {
+      DreamHavenAudio.startSound(btn.dataset.sound);
     });
 
-    playBtn.addEventListener("click", () => {
-      if (!currentTrack) {
-        musicStatus.textContent = "Please select a track first";
-        return;
-      }
+  } else {
+    running = false;
+    startStopBtn.textContent = "Start";
 
-      audio.play();
-      musicStatus.textContent = "Playing…";
+    stopTimer();
+    DreamHavenAudio.stopAll();
+  }
+});
 
-      if (timer) clearTimeout(timer);
+/* ---------------- SOUND BUTTONS ---------------- */
+document.querySelectorAll(".sound-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    btn.classList.toggle("active");
 
-      let seconds = parseInt(durationSelect.value);
-      if (seconds === 0) {
-        const custom = parseInt(customMinutes.value);
-        if (!isNaN(custom)) seconds = custom * 60;
-      }
+    if (running) {
+      if (btn.classList.contains("active"))
+        DreamHavenAudio.startSound(btn.dataset.sound);
+      else
+        DreamHavenAudio.stopSound(btn.dataset.sound);
+    }
+  });
+});
 
-      if (seconds > 0) {
-        timer = setTimeout(() => {
-          audio.pause();
-          musicStatus.textContent = "Timer ended";
-        }, seconds * 1000);
-      }
-    });
+/* ---------------- VOLUME ---------------- */
+document.getElementById("volumeSlider").addEventListener("input", e => {
+  DreamHavenAudio.setVolume(e.target.value);
+});
+</script>
 
-    pauseBtn.addEventListener("click", () => {
-      audio.pause();
-      musicStatus.textContent = "Paused";
-      if (timer) clearTimeout(timer);
-    });
-  </script>
 </body>
 </html>
-    
+                
