@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
  <link rel="icon" type="image/png" href="icon_1778321705404.png" />
-<link rel="apple-touch-icon" href="icon_1778321705404.png" />
-<link rel="manifest" href="manifest.json" />
-  <meta charset="UTF-8" />
-  <title>Dream Haven – Bedtime Routine</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <link rel="apple-touch-icon" href="icon_1778321705404.png" />
+ <link rel="manifest" href="manifest.json" />
 
-  <style>
+ <meta charset="UTF-8" />
+ <title>Dream Haven – Bedtime Routine</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+ <style>
     :root {
-      --bg: #cfe9ff;          /* pastel blue */
-      --card-bg: #fff7c9;     /* pastel yellow */
+      --bg: #cfe9ff;
+      --card-bg: #fff7c9;
       --text-dark: #3a3a3a;
     }
 
@@ -121,7 +122,7 @@
       background: #fff2a8;
       border: 2px solid #e6d27a;
     }
-  </style>
+ </style>
 </head>
 
 <body>
@@ -150,7 +151,7 @@
     <div class="card">
       <h3>Your habits & goals</h3>
 
-      <label for="habitInput">Add a habit (e.g. “Read a book”, “Skincare”, “Stretching”)</label>
+      <label for="habitInput">Add a habit</label>
       <input type="text" id="habitInput" placeholder="Type a habit and click Add" />
 
       <button class="small-btn" id="addHabitBtn">Add habit</button>
@@ -197,12 +198,12 @@
     const addHabitBtn = document.getElementById('addHabitBtn');
     const habitList = document.getElementById('habitList');
 
-    let habits = [];
+    let habits = JSON.parse(localStorage.getItem("savedHabits") || "[]");
 
     function renderHabits() {
       habitList.innerHTML = '';
       if (habits.length === 0) {
-        habitList.innerHTML = '<p style="opacity:0.7;">No habits added yet. Add things like reading, journaling, skincare, stretching…</p>';
+        habitList.innerHTML = '<p style="opacity:0.7;">No habits added yet.</p>';
         return;
       }
       habits.forEach((h, idx) => {
@@ -218,6 +219,7 @@
       if (!val) return;
       habits.push(val);
       habitInput.value = '';
+      localStorage.setItem("savedHabits", JSON.stringify(habits));
       renderHabits();
     });
 
@@ -272,15 +274,24 @@
       routineSteps.innerHTML = steps.map(s => `• ${s}`).join('<br>');
       notificationPreview.style.display = 'block';
 
+      /* SAVE ROUTINE */
+      localStorage.setItem("savedRoutine", routineSteps.innerHTML);
+
       /* REAL NOTIFICATION */
       sendRealNotification("Time for bed!! 💤 Sleep well and sweet dreams!! 😊💫🌙☄️🌌");
     });
 
+    /* ---------------- LOAD SAVED ROUTINE ---------------- */
     window.addEventListener('load', () => {
       renderHabits();
+
+      const saved = localStorage.getItem("savedRoutine");
+      if (saved) {
+        routineSteps.innerHTML = saved;
+        notificationPreview.style.display = 'block';
+      }
     });
   </script>
 </body>
 </html>
-    
-    
+          
