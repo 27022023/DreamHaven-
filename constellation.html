@@ -8,20 +8,31 @@
     :root {
       --text-light: #f7f7ff;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
     body {
       background: radial-gradient(circle at top, #1a103d, #02000a);
       color: var(--text-light);
       min-height: 100vh;
     }
-    .section { padding: 1rem 1.25rem 1.5rem; }
+    .section {
+      padding: 1rem 1.25rem 1.5rem;
+    }
     .section-header {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       margin-bottom: 1rem;
     }
-    .back-link { text-decoration: none; color: var(--text-light); font-size: 1.3rem; }
+    .back-link {
+      text-decoration: none;
+      color: var(--text-light);
+      font-size: 1.3rem;
+    }
     .section-title {
       font-size: 1.2rem;
       font-weight: 600;
@@ -47,9 +58,6 @@
       opacity: 0.7;
       margin-top: 0.25rem;
     }
-    @media (min-width: 768px) {
-      .section { padding: 1.5rem 2.5rem 2rem; }
-    }
   </style>
 </head>
 <body>
@@ -61,9 +69,7 @@
 
     <canvas id="skyCanvas"></canvas>
     <div class="star-label" id="starLabel">Tap a star to see its name 🌟</div>
-    <p class="hint">
-      Let your eyes rest on the night sky.✨
-    </p>
+    <p class="hint">Let your eyes rest on the night sky.✨</p>
   </section>
 
   <script>
@@ -71,42 +77,140 @@
     const starLabel = document.getElementById('starLabel');
     const ctx = skyCanvas.getContext('2d');
 
+    /* Named stars (clickable) */
     const stars = [
-      { name: 'Vega', x: 0.2, y: 0.3 },
-      { name: 'Altair', x: 0.4, y: 0.5 },
-      { name: 'Deneb', x: 0.6, y: 0.25 },
-      { name: 'Sirius', x: 0.7, y: 0.6 },
-      { name: 'Betelgeuse', x: 0.3, y: 0.7 },
-      { name: 'Rigel', x: 0.5, y: 0.8 },
-      { name: 'Polaris', x: 0.85, y: 0.2 }
+      { name: 'Vega',        x: 0.20, y: 0.30 },
+      { name: 'Altair',      x: 0.40, y: 0.50 },
+      { name: 'Deneb',       x: 0.60, y: 0.25 },
+      { name: 'Sirius',      x: 0.70, y: 0.60 },
+      { name: 'Betelgeuse',  x: 0.30, y: 0.70 },
+      { name: 'Rigel',       x: 0.50, y: 0.80 },
+      { name: 'Polaris',     x: 0.85, y: 0.20 }
     ];
+
+    /* Simple constellation connections using named stars */
+    const constellations = [
+      ['Vega', 'Altair'],
+      ['Vega', 'Deneb'],
+      ['Deneb', 'Altair'],      // Summer Triangle
+      ['Betelgeuse', 'Rigel'],  // Orion diagonal
+      ['Polaris', 'Deneb']      // North-ish line
+    ];
+
+    /* Random starfield + shooting stars + nebula + galaxy band */
+    let randomStars = [];
+    let shootingStars = [];
+
+    function generateRandomStars(count) {
+      randomStars = [];
+      for (let i = 0; i < count; i++) {
+        randomStars.push({
+          x: Math.random(),
+          y: Math.random(),
+          r: Math.random() * 1.4 + 0.3,
+          alpha: 0.4 + Math.random() * 0.6,
+          twinkleSpeed: 0.002 + Math.random() * 0.004,
+          twinklePhase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function spawnShootingStar() {
+      const w = skyCanvas.width;
+      const h = skyCanvas.height;
+
+      const fromTop = Math.random() < 0.5;
+      const startX = fromTop ? Math.random() * w : -50;
+      const startY = fromTop ? -20 : Math.random() * (h * 0.4);
+      const speed = 4 + Math.random() * 4;
+
+      shootingStars.push({
+        x: startX,
+        y: startY,
+        vx:  speed,
+        vy:  speed * 0.4,
+        life: 0,
+        maxLife: 80 + Math.random() * 40
+      });
+    }
 
     function resizeCanvas() {
       skyCanvas.width = skyCanvas.clientWidth;
       skyCanvas.height = skyCanvas.clientHeight;
-      drawSky();
     }
 
-    function drawSky() {
+    function drawBackground() {
       const w = skyCanvas.width;
       const h = skyCanvas.height;
-      ctx.clearRect(0, 0, w, h);
 
       const grad = ctx.createRadialGradient(w/2, 0, 0, w/2, h, h);
       grad.addColorStop(0, '#2b1b5a');
       grad.addColorStop(1, '#05010f');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
+    }
 
-      ctx.fillStyle = 'rgba(255,255,255,0.6)';
-      for (let i = 0; i < 80; i++) {
-        const x = Math.random() * w;
-        const y = Math.random() * h;
-        const r = Math.random() * 1.2;
+    function drawNebula() {
+      const w = skyCanvas.width;
+      const h = skyCanvas.height;
+
+      const nebulaGrad = ctx.createRadialGradient(
+        w * 0.3, h * 0.2, 0,
+        w * 0.3, h * 0.2, w * 0.6
+      );
+      nebulaGrad.addColorStop(0, 'rgba(180,120,255,0.35)');
+      nebulaGrad.addColorStop(0.5, 'rgba(80,40,140,0.15)');
+      nebulaGrad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = nebulaGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      const nebulaGrad2 = ctx.createRadialGradient(
+        w * 0.7, h * 0.5, 0,
+        w * 0.7, h * 0.5, w * 0.7
+      );
+      nebulaGrad2.addColorStop(0, 'rgba(120,200,255,0.25)');
+      nebulaGrad2.addColorStop(0.5, 'rgba(40,80,140,0.12)');
+      nebulaGrad2.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = nebulaGrad2;
+      ctx.fillRect(0, 0, w, h);
+    }
+
+    function drawGalaxyBand() {
+      const w = skyCanvas.width;
+      const h = skyCanvas.height;
+
+      ctx.save();
+      ctx.translate(w / 2, h / 2);
+      ctx.rotate(-0.4);
+
+      const bandGrad = ctx.createLinearGradient(-w, 0, w, 0);
+      bandGrad.addColorStop(0, 'rgba(255,255,255,0)');
+      bandGrad.addColorStop(0.3, 'rgba(255,255,255,0.18)');
+      bandGrad.addColorStop(0.5, 'rgba(200,220,255,0.28)');
+      bandGrad.addColorStop(0.7, 'rgba(255,255,255,0.18)');
+      bandGrad.addColorStop(1, 'rgba(255,255,255,0)');
+
+      ctx.fillStyle = bandGrad;
+      ctx.fillRect(-w, -h * 0.15, w * 2, h * 0.3);
+      ctx.restore();
+    }
+
+    function drawRandomStars(time) {
+      const w = skyCanvas.width;
+      const h = skyCanvas.height;
+
+      randomStars.forEach(s => {
+        const twinkle = 0.5 + 0.5 * Math.sin(time * s.twinkleSpeed + s.twinklePhase);
+        ctx.fillStyle = `rgba(255,255,255,${s.alpha * twinkle})`;
         ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
         ctx.fill();
-      }
+      });
+    }
+
+    function drawNamedStars() {
+      const w = skyCanvas.width;
+      const h = skyCanvas.height;
 
       stars.forEach(s => {
         const x = s.x * w;
@@ -116,6 +220,62 @@
         ctx.arc(x, y, 4, 0, Math.PI * 2);
         ctx.fill();
       });
+    }
+
+    function drawConstellations() {
+      const w = skyCanvas.width;
+      const h = skyCanvas.height;
+
+      ctx.strokeStyle = 'rgba(255,255,200,0.6)';
+      ctx.lineWidth = 1.5;
+
+      constellations.forEach(pair => {
+        const s1 = stars.find(s => s.name === pair[0]);
+        const s2 = stars.find(s => s.name === pair[1]);
+        if (s1 && s2) {
+          ctx.beginPath();
+          ctx.moveTo(s1.x * w, s1.y * h);
+          ctx.lineTo(s2.x * w, s2.y * h);
+          ctx.stroke();
+        }
+      });
+    }
+
+    function updateShootingStars() {
+      const w = skyCanvas.width;
+      const h = skyCanvas.height;
+
+      shootingStars.forEach(s => {
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life++;
+
+        const lifeRatio = 1 - s.life / s.maxLife;
+        const alpha = Math.max(0, lifeRatio);
+
+        ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.vx * 4, s.y - s.vy * 4);
+        ctx.stroke();
+      });
+
+      shootingStars = shootingStars.filter(s => s.life < s.maxLife);
+      if (Math.random() < 0.02 && shootingStars.length < 4) {
+        spawnShootingStar();
+      }
+    }
+
+    function drawSky(time) {
+      resizeCanvas();
+      drawBackground();
+      drawNebula();
+      drawGalaxyBand();
+      drawRandomStars(time);
+      drawConstellations();
+      drawNamedStars();
+      updateShootingStars();
     }
 
     function handleStarClick(evt) {
@@ -140,9 +300,17 @@
       }
     }
 
+    function animate(time) {
+      drawSky(time || 0);
+      requestAnimationFrame(animate);
+    }
+
     skyCanvas.addEventListener('click', handleStarClick);
-    window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('load', resizeCanvas);
+    window.addEventListener('load', () => {
+      generateRandomStars(350);
+      animate(0);
+    });
   </script>
 </body>
 </html>
+          
