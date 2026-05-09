@@ -147,13 +147,15 @@
     openMenu.addEventListener('click', () => {
       menuOverlay.style.display = 'flex';
     });
-    closeMenu.addEventListener('click', () => {
+        closeMenu.addEventListener('click', () => {
       menuOverlay.style.display = 'none';
     });
- <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js");
-  }
-</script>
+  </script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
 </body>
 </html>
