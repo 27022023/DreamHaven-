@@ -77,7 +77,7 @@
     const starLabel = document.getElementById('starLabel');
     const ctx = skyCanvas.getContext('2d');
 
-    /* Named stars (clickable) */
+    /* MORE NAMED STARS (normalized positions) */
     const stars = [
       { name: 'Vega',        x: 0.20, y: 0.30 },
       { name: 'Altair',      x: 0.40, y: 0.50 },
@@ -85,19 +85,46 @@
       { name: 'Sirius',      x: 0.70, y: 0.60 },
       { name: 'Betelgeuse',  x: 0.30, y: 0.70 },
       { name: 'Rigel',       x: 0.50, y: 0.80 },
-      { name: 'Polaris',     x: 0.85, y: 0.20 }
+      { name: 'Polaris',     x: 0.85, y: 0.20 },
+      { name: 'Arcturus',    x: 0.15, y: 0.55 },
+      { name: 'Capella',     x: 0.10, y: 0.25 },
+      { name: 'Spica',       x: 0.65, y: 0.75 },
+      { name: 'Antares',     x: 0.55, y: 0.65 },
+      { name: 'Fomalhaut',   x: 0.80, y: 0.80 },
+      { name: 'Aldebaran',   x: 0.25, y: 0.45 },
+      { name: 'Procyon',     x: 0.45, y: 0.40 },
+      { name: 'Regulus',     x: 0.55, y: 0.35 },
+      { name: 'Castor',      x: 0.35, y: 0.20 },
+      { name: 'Pollux',      x: 0.38, y: 0.23 }
     ];
 
-    /* Simple constellation connections using named stars */
+    /* MORE CONSTELLATION LINES (using these stars) */
     const constellations = [
+      // Summer Triangle
       ['Vega', 'Altair'],
       ['Vega', 'Deneb'],
-      ['Deneb', 'Altair'],      // Summer Triangle
-      ['Betelgeuse', 'Rigel'],  // Orion diagonal
-      ['Polaris', 'Deneb']      // North-ish line
+      ['Deneb', 'Altair'],
+
+      // Orion-ish
+      ['Betelgeuse', 'Rigel'],
+      ['Betelgeuse', 'Aldebaran'],
+
+      // Big-ish dipper style
+      ['Polaris', 'Capella'],
+      ['Capella', 'Arcturus'],
+      ['Arcturus', 'Regulus'],
+
+      // Gemini
+      ['Castor', 'Pollux'],
+
+      // Bright chain
+      ['Sirius', 'Procyon'],
+      ['Procyon', 'Betelgeuse'],
+      ['Spica', 'Antares'],
+      ['Antares', 'Fomalhaut']
     ];
 
-    /* Random starfield + shooting stars + nebula + galaxy band */
+    /* RANDOM STARFIELD + SHOOTING STARS + NEBULA */
     let randomStars = [];
     let shootingStars = [];
 
@@ -173,26 +200,6 @@
       nebulaGrad2.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = nebulaGrad2;
       ctx.fillRect(0, 0, w, h);
-    }
-
-    function drawGalaxyBand() {
-      const w = skyCanvas.width;
-      const h = skyCanvas.height;
-
-      ctx.save();
-      ctx.translate(w / 2, h / 2);
-      ctx.rotate(-0.4);
-
-      const bandGrad = ctx.createLinearGradient(-w, 0, w, 0);
-      bandGrad.addColorStop(0, 'rgba(255,255,255,0)');
-      bandGrad.addColorStop(0.3, 'rgba(255,255,255,0.18)');
-      bandGrad.addColorStop(0.5, 'rgba(200,220,255,0.28)');
-      bandGrad.addColorStop(0.7, 'rgba(255,255,255,0.18)');
-      bandGrad.addColorStop(1, 'rgba(255,255,255,0)');
-
-      ctx.fillStyle = bandGrad;
-      ctx.fillRect(-w, -h * 0.15, w * 2, h * 0.3);
-      ctx.restore();
     }
 
     function drawRandomStars(time) {
@@ -271,7 +278,6 @@
       resizeCanvas();
       drawBackground();
       drawNebula();
-      drawGalaxyBand();
       drawRandomStars(time);
       drawConstellations();
       drawNamedStars();
@@ -307,10 +313,10 @@
 
     skyCanvas.addEventListener('click', handleStarClick);
     window.addEventListener('load', () => {
-      generateRandomStars(350);
+      generateRandomStars(500); // LOTS of stars
       animate(0);
     });
   </script>
 </body>
 </html>
-          
+                    
