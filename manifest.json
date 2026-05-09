@@ -1,0 +1,20 @@
+{
+  "name": "Dream Haven",
+  "short_name": "Dream Haven",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#1a103d",
+  "theme_color": "#1a103d",
+  "icons": [
+    {
+      "src": "icon_1778321705404.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_1778321705404.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
